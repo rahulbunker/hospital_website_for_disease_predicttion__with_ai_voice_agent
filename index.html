@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>CityMed Hospital — AI Disease Prediction Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+:root{
+  --navy:#0a2540;
+  --navy2:#0d3060;
+  --teal:#00897b;
+  --teal2:#00acc1;
+  --red:#c62828;
+  --red2:#ef5350;
+  --green:#2e7d32;
+  --amber:#f57c00;
+  --white:#ffffff;
+  --off:#f4f7fb;
+  --border:#dce4ef;
+  --text:#1a2b40;
+  --muted:#5a6e85;
+  --radius:14px;
+  --shadow:0 4px 24px rgba(10,37,64,.10);
+  --shadow2:0 2px 8px rgba(10,37,64,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--off);font-family:'DM Sans',sans-serif;color:var(--text);min-height:100vh}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#1a4a7a 100%);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.25)}
+.hdr-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo-wrap{display:flex;align-items:center;gap:12px}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--teal),var(--teal2));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,137,123,.4)}
+.logo-icon i{font-size:22px;color:#fff}
+.logo-text h1{font-family:'Playfair Display',serif;font-size:17px;color:#fff;letter-spacing:.3px}
+.logo-text p{font-size:10.5px;color:rgba(255,255,255,.6);letter-spacing:.5px;text-transform:uppercase;margin-top:1px}
+.hdr-nav{display:flex;gap:4px}
+.hdr-nav a{color:rgba(255,255,255,.75);font-size:12.5px;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;text-decoration:none;font-weight:500}
+.hdr-nav a:hover{color:#fff;background:rgba(255,255,255,.12)}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.emergency-pill{background:rgba(239,83,80,.2);border:1px solid rgba(239,83,80,.4);color:#ff8a80;font-size:11px;padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;cursor:pointer;transition:all .2s}
+.emergency-pill:hover{background:rgba(239,83,80,.3)}
+
+/* ── HERO BANNER ── */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#1b4f8a 50%,#1a6da0 100%);padding:28px 24px 24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(0,172,193,.15),transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-30px;left:10%;width:180px;height:180px;background:radial-gradient(circle,rgba(0,137,123,.1),transparent 70%);border-radius:50%}
+.hero-inner{max-width:860px;margin:0 auto;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(0,172,193,.2);border:1px solid rgba(0,172,193,.35);color:#80deea;font-size:11px;padding:4px 12px;border-radius:20px;margin-bottom:12px;font-weight:500;letter-spacing:.4px}
+.hero h2{font-family:'Playfair Display',serif;font-size:24px;color:#fff;line-height:1.3;margin-bottom:6px}
+.hero h2 span{color:#80deea}
+.hero p{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:16px}
+.trust-badges{display:flex;gap:8px;flex-wrap:wrap}
+.tbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.85);font-size:11px;padding:4px 11px;border-radius:20px;display:flex;align-items:center;gap:5px;backdrop-filter:blur(4px)}
+.tbadge i{font-size:13px;color:#80deea}
+
+/* ── MAIN WRAP ── */
+.main{max-width:860px;margin:0 auto;padding:20px 16px 100px}
+
+/* ── STEP PROGRESS ── */
+.steps{display:flex;align-items:center;margin-bottom:20px;background:#fff;border-radius:var(--radius);padding:14px 20px;box-shadow:var(--shadow2);border:1px solid var(--border)}
+.step{display:flex;align-items:center;gap:9px;flex:1;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;right:0;top:50%;width:calc(100% - 36px);height:1.5px;background:var(--border);margin-left:36px;transform:translateY(-50%)}
+.step.done:not(:last-child)::after{background:var(--teal)}
+.step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;transition:all .3s;border:2px solid var(--border);background:#fff;color:var(--muted)}
+.step.active .step-circle{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(10,37,64,.3)}
+.step.done .step-circle{background:var(--teal);border-color:var(--teal);color:#fff}
+.step-label{font-size:12px;font-weight:500;color:var(--muted)}
+.step.active .step-label{color:var(--navy);font-weight:600}
+.step.done .step-label{color:var(--teal)}
+
+/* ── SCREEN VISIBILITY ── */
+.screen{display:none}.screen.active{display:block}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;box-shadow:var(--shadow2)}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card-title i{font-size:20px;color:var(--teal)}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:18px}
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:14px}
+.field label{font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.field input,.field select{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13.5px;color:var(--text);background:#fff;transition:all .2s;font-family:'DM Sans',sans-serif;appearance:none}
+.field input:focus,.field select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,137,123,.1)}
+.field input::placeholder{color:#aab5c4}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field-inline{display:flex;gap:10px;align-items:flex-end}
+.field-inline .field{flex:1;margin-bottom:0}
+
+/* ── OTP ── */
+.otp-btn{flex-shrink:0;padding:10px 16px;background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;transition:all .2s}
+.otp-btn:hover{opacity:.9;transform:translateY(-1px)}
+.otp-btn:disabled{background:#b0bec5;cursor:not-allowed;transform:none}
+.otp-input{text-align:center;font-size:22px;font-weight:700;letter-spacing:8px!important;color:var(--navy)}
+.otp-timer{font-size:11.5px;color:var(--muted);text-align:right;margin-top:5px}
+.demo-note{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1px solid #a5d6a7;border-radius:8px;padding:8px 12px;font-size:12px;color:#2e7d32;margin-top:8px;display:flex;align-items:center;gap:6px}
+
+/* ── RADIO / CHECK ── */
+.radio-group,.check-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.radio-opt,.check-opt{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:12.5px;transition:all .2s;user-select:none}
+.radio-opt:has(input:checked),.check-opt:has(input:checked){border-color:var(--teal);background:#e0f2f1;color:var(--teal);font-weight:500}
+.radio-opt input,.check-opt input{display:none}
+
+/* ── PATIENT BAR ── */
+.patient-bar{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;gap:16px;flex-wrap:wrap}
+.pinfo{display:flex;align-items:center;gap:5px;font-size:12px}
+.pinfo i{color:#80deea;font-size:14px}
+.pinfo span{color:rgba(255,255,255,.65)}
+.pinfo strong{color:#fff;font-weight:600}
+
+/* ── DISEASE TABS ── */
+.disease-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.dtab{padding:7px 14px;border-radius:22px;font-size:12.5px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:5px}
+.dtab:hover{border-color:var(--navy);color:var(--navy)}
+.dtab.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 4px 12px rgba(10,37,64,.25)}
+.dform{display:none}.dform.active{display:block}
+
+/* ── BUTTONS ── */
+.btn-primary{background:linear-gradient(135deg,var(--navy),#1a4a8a);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 4px 16px rgba(10,37,64,.25);margin-top:16px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(10,37,64,.35)}
+.btn-secondary{background:#fff;color:var(--navy);border:1.5px solid var(--border);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-secondary:hover{border-color:var(--navy);background:var(--off)}
+.btn-teal{background:linear-gradient(135deg,var(--teal),var(--teal2));color:#fff;border:none;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 14px rgba(0,137,123,.3)}
+.btn-teal:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,137,123,.4)}
+.btn-danger{background:linear-gradient(135deg,#c62828,#e53935);color:#fff;border:none;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 14px rgba(198,40,40,.3)}
+.btn-danger:hover{transform:translateY(-1px)}
+.btn-wa{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border:none;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.btn-row > *{flex:1;min-width:120px}
+.btn-appt-call{background:linear-gradient(135deg,#e65100,#f4511e);color:#fff;border:none;padding:14px 24px;border-radius:12px;font-size:14.5px;font-weight:700;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;font-family:'DM Sans',sans-serif;transition:all .25s;box-shadow:0 5px 20px rgba(230,81,0,.35);letter-spacing:.2px}
+.btn-appt-call:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(230,81,0,.45)}
+.btn-appt-call i{font-size:20px}
+
+/* ── RESULT BOX ── */
+.result-banner{border-radius:var(--radius);padding:22px;text-align:center;margin-bottom:16px;position:relative;overflow:hidden}
+.result-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.res-positive{background:linear-gradient(135deg,#fff5f5,#fff0f0);border:1.5px solid #ffcdd2}
+.res-positive::before{background:linear-gradient(90deg,var(--red),var(--red2))}
+.res-negative{background:linear-gradient(135deg,#f0faf4,#edf7f0);border:1.5px solid #c8e6c9}
+.res-negative::before{background:linear-gradient(90deg,var(--green),#43a047)}
+.res-icon{font-size:42px;margin-bottom:8px}
+.res-title{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:6px}
+.res-positive .res-title{color:var(--red)}
+.res-negative .res-title{color:var(--green)}
+.res-pct{display:inline-block;font-size:32px;font-weight:700;margin:4px 0}
+.res-positive .res-pct{color:var(--red)}
+.res-negative .res-pct{color:var(--green)}
+.res-advice{font-size:13px;color:var(--muted);max-width:380px;margin:0 auto;line-height:1.6}
+
+/* ── APPOINTMENT CARD ── */
+.appt-card{background:linear-gradient(135deg,#fff8e1,#fff3e0);border:1.5px solid #ffe082;border-radius:var(--radius);padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.appt-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--amber),#ffa000)}
+.appt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.appt-title{font-family:'Playfair Display',serif;font-size:16px;color:#bf360c;display:flex;align-items:center;gap:7px}
+.appt-title i{font-size:20px}
+.live-badge{background:#ef5350;color:#fff;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;letter-spacing:.5px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.appt-number{font-size:30px;font-weight:700;color:var(--navy);letter-spacing:1px;margin:6px 0;font-family:'Playfair Display',serif}
+.appt-meta{font-size:12px;color:#795548;margin-bottom:14px}
+
+/* ── HISTORY TABLE ── */
+.hist-table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:13px}
+.hist-table th{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:0 12px 4px}
+.hist-table td{padding:10px 12px;background:var(--off);color:var(--text)}
+.hist-table td:first-child{border-radius:8px 0 0 8px}
+.hist-table td:last-child{border-radius:0 8px 8px 0}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;display:inline-block}
+.badge-red{background:#ffebee;color:#c62828}
+.badge-green{background:#e8f5e9;color:#2e7d32}
+
+/* ── DISCLAIMER ── */
+.disclaimer{background:linear-gradient(135deg,#fff8e1,#fffde7);border:1px solid #fff176;border-radius:10px;padding:10px 14px;font-size:12px;color:#f57f17;display:flex;align-items:flex-start;gap:7px;margin-top:8px;line-height:1.5}
+.disclaimer i{flex-shrink:0;margin-top:1px;font-size:15px}
+
+/* ── FLOATING CONTACT STRIP ── */
+.float-contact{position:fixed;bottom:0;left:0;right:0;z-index:200;pointer-events:none}
+.float-inner{max-width:860px;margin:0 auto;padding:0 16px 0}
+.contact-strip{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:16px 16px 0 0;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -4px 24px rgba(10,37,64,.25);pointer-events:all}
+.contact-left{display:flex;align-items:center;gap:10px}
+.contact-dot{width:8px;height:8px;background:#4caf50;border-radius:50%;box-shadow:0 0 0 3px rgba(76,175,80,.25);animation:pulse 2s infinite;flex-shrink:0}
+.contact-text p{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:1px}
+.contact-text strong{font-size:13.5px;color:#fff;font-weight:600}
+.contact-right{display:flex;gap:8px;align-items:center}
+.fcall-btn{background:linear-gradient(135deg,#43a047,#2e7d32);color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:all .2s;white-space:nowrap}
+.fcall-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(46,125,50,.4)}
+.contact-note{font-size:10px;color:rgba(255,255,255,.5);text-align:right;flex-shrink:0;line-height:1.4;display:none}
+
+/* ── FOOTER ── */
+.footer-bar{background:var(--navy);padding:16px 24px;text-align:center}
+.footer-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bar p{font-size:11px;color:rgba(255,255,255,.5)}
+.footer-cities{font-size:11px;color:rgba(255,255,255,.4);display:flex;gap:8px;flex-wrap:wrap}
+.footer-cities span{border-left:1px solid rgba(255,255,255,.15);padding-left:8px}
+.footer-cities span:first-child{border:none;padding:0}
+
+/* ── ANIMATIONS ── */
+.screen.active{animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:560px){
+  .hdr-nav{display:none}
+  .field-row{grid-template-columns:1fr}
+  .appt-number{font-size:24px}
+  .contact-note{display:none}
+  .hero h2{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="logo-wrap">
+      <div class="logo-icon"><i class="ti ti-building-hospital"></i></div>
+      <div class="logo-text">
+        <h1>CityMed Hospital</h1>
+        <p>Advanced Healthcare &amp; AI Diagnostics</p>
+      </div>
+    </div>
+    <nav class="hdr-nav">
+      <a>Home</a><a>Services</a><a>Doctors</a><a>Contact</a>
+    </nav>
+    <div class="hdr-right">
+      <div class="emergency-pill" onclick="window.location='tel:+119208254101'">
+        <i class="ti ti-ambulance" style="font-size:13px"></i> Emergency: +1 920 825 4101
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════ HERO ══════════════ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><i class="ti ti-robot" style="font-size:13px"></i> AI-Powered Free Screening</div>
+    <h2>Check Your Health <span>From Home</span><br/>AI Screening in 5 Minutes</h2>
+    <p>Free AI screening for Diabetes, Heart, Blood Pressure, Kidney &amp; Liver Disease</p>
+    <div class="trust-badges">
+      <span class="tbadge"><i class="ti ti-shield-check"></i> Verified Doctors</span>
+      <span class="tbadge"><i class="ti ti-clock-24"></i> 24/7 Available</span>
+      <span class="tbadge"><i class="ti ti-certificate"></i> NABH Certified</span>
+      <span class="tbadge"><i class="ti ti-map-pin"></i> 6 Cities</span>
+      <span class="tbadge"><i class="ti ti-users"></i> 50,000+ Patients</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main class="main">
+
+<!-- ══ SCREEN 1: LOGIN ══ -->
+<div class="screen active" id="sc-login">
+  <!-- Step Bar -->
+  <div class="steps">
+    <div class="step active">
+      <div class="step-circle">1</div>
+      <span class="step-label">Patient Login</span>
+    </div>
+    <div class="step">
+      <div class="step-circle">2</div>
+      <span class="step-label">Health Screening</span>
+    </div>
+    <div class="step">
+      <div class="step-circle">3</div>
+      <span class="step-label">Results</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><i class="ti ti-user-circle"></i> Patient Registration</div>
+    <p class="card-sub">Fill in your details — all data is encrypted and secure</p>
+    <div class="divider"></div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="l-name" placeholder="e.g. John Smith"/>
+      </div>
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="l-age" placeholder="e.g. 42" min="1" max="120"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Mobile Number</label>
+      <div class="field-inline">
+        <div class="field" style="margin:0">
+          <input type="tel" id="l-mobile" placeholder="10-digit mobile number" maxlength="10"/>
+        </div>
+        <button class="otp-btn" id="otp-btn" onclick="sendOTP()">Send OTP</button>
+      </div>
+      <div class="otp-timer" id="otp-timer" style="display:none"></div>
+    </div>
+
+    <div id="otp-sent-row" style="display:none">
+      <div class="field">
+        <label>Enter OTP</label>
+        <input type="text" class="otp-input" id="l-otp" placeholder="• • • • • •" maxlength="6"/>
+      </div>
+      <div class="demo-note"><i class="ti ti-info-circle"></i> Demo OTP: <strong>123456</strong></div>
+    </div>
+
+    <div class="field-row" style="margin-top:14px">
+      <div class="field">
+        <label>Gender</label>
+        <select id="l-gender">
+          <option value="">Select...</option>
+          <option>Male</option><option>Female</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>City</label>
+        <select id="l-city">
+          <option value="">Select your city</option>
+          <option>Delhi</option><option>Mumbai</option><option>Lucknow</option>
+          <option>Agra</option><option>Aligarh</option><option>Kanpur</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="doLogin()">
+      <i class="ti ti-shield-check"></i> Verify &amp; Continue
+    </button>
+  </div>
+
+  <div class="disclaimer">
+    <i class="ti ti-lock"></i>
+    Your data is shared only with CityMed Hospital authorized staff. Mobile is verified via OTP and will never be shared.
+  </div>
+</div>
+
+<!-- ══ SCREEN 2: DISEASE ══ -->
+<div class="screen" id="sc-disease">
+  <div class="steps">
+    <div class="step done">
+      <div class="step-circle"><i class="ti ti-check" style="font-size:12px"></i></div>
+      <span class="step-label">Patient Login</span>
+    </div>
+    <div class="step active">
+      <div class="step-circle">2</div>
+      <span class="step-label">Health Screening</span>
+    </div>
+    <div class="step">
+      <div class="step-circle">3</div>
+      <span class="step-label">Results</span>
+    </div>
+  </div>
+
+  <div class="patient-bar" id="pbar"></div>
+
+  <div class="disease-nav">
+    <div class="dtab active" onclick="switchD('diabetes',this)"><span>🩸</span> Diabetes</div>
+    <div class="dtab" onclick="switchD('heart',this)"><span>❤️</span> Heart</div>
+    <div class="dtab" onclick="switchD('bp',this)"><span>💉</span> Blood Pressure</div>
+    <div class="dtab" onclick="switchD('kidney',this)"><span>🫘</span> Kidney</div>
+    <div class="dtab" onclick="switchD('liver',this)"><span>🟡</span> Liver</div>
+  </div>
+
+  <!-- Diabetes -->
+  <div class="dform active card" id="df-diabetes">
+    <div class="card-title"><i class="ti ti-droplet-filled"></i> Diabetes Screening</div>
+    <p class="card-sub">Enter blood glucose, BMI and related parameters</p>
+    <div class="divider"></div>
+    <div class="field-row">
+      <div class="field"><label>Glucose (mg/dL)</label><input type="number" id="dg" placeholder="70–200"/></div>
+      <div class="field"><label>BMI</label><input type="number" id="db" placeholder="15–50" step="0.1"/></div>
+      <div class="field"><label>HbA1c (%)</label><input type="number" id="dh" placeholder="4–15" step="0.1"/></div>
+      <div class="field">
+        <label>Family History</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="df" value="yes"/> Yes</label>
+          <label class="radio-opt"><input type="radio" name="df" value="no" checked/> No</label>
+        </div>
+      </div>
+    </div>
+    <div class="field"><label>Symptoms (select all that apply)</label>
+      <div class="check-group">
+        <label class="check-opt"><input type="checkbox" id="dc1"/> Excessive Thirst</label>
+        <label class="check-opt"><input type="checkbox" id="dc2"/> Frequent Urination</label>
+        <label class="check-opt"><input type="checkbox" id="dc3"/> Fatigue</label>
+        <label class="check-opt"><input type="checkbox" id="dc4"/> Blurred Vision</label>
+        <label class="check-opt"><input type="checkbox" id="dc5"/> Slow Healing Wounds</label>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="predict('diabetes')"><i class="ti ti-stethoscope"></i> Check Diabetes Risk</button>
+  </div>
+
+  <!-- Heart -->
+  <div class="dform card" id="df-heart">
+    <div class="card-title"><i class="ti ti-heart-rate-monitor"></i> Heart Disease Screening</div>
+    <p class="card-sub">Assess heart risk using chest pain, BP and cholesterol</p>
+    <div class="divider"></div>
+    <div class="field-row">
+      <div class="field"><label>Chest Pain Type</label>
+        <select id="hc"><option value="">Select</option><option value="typical">Typical Angina</option><option value="atypical">Atypical Angina</option><option value="non">Non-Anginal</option><option value="none">No Pain</option></select>
+      </div>
+      <div class="field"><label>Resting BP (mmHg)</label><input type="number" id="hb" placeholder="90–200"/></div>
+      <div class="field"><label>Cholesterol (mg/dL)</label><input type="number" id="hch" placeholder="100–600"/></div>
+      <div class="field"><label>Max Heart Rate</label><input type="number" id="hhr" placeholder="60–220"/></div>
+    </div>
+    <div class="field"><label>Shortness of breath during exercise?</label>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="hex" value="yes"/> Yes</label>
+        <label class="radio-opt"><input type="radio" name="hex" value="no" checked/> No</label>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="predict('heart')"><i class="ti ti-stethoscope"></i> Check Heart Risk</button>
+  </div>
+
+  <!-- BP -->
+  <div class="dform card" id="df-bp">
+    <div class="card-title"><i class="ti ti-activity"></i> Blood Pressure Screening</div>
+    <p class="card-sub">Assess BP risk using systolic/diastolic readings and lifestyle factors</p>
+    <div class="divider"></div>
+    <div class="field-row">
+      <div class="field"><label>Systolic BP (mmHg)</label><input type="number" id="bps" placeholder="90–200"/></div>
+      <div class="field"><label>Diastolic BP (mmHg)</label><input type="number" id="bpd" placeholder="60–130"/></div>
+      <div class="field"><label>Salt Intake</label>
+        <select id="bpsl"><option value="">Select</option><option value="low">Low</option><option value="normal">Normal</option><option value="high">High</option></select>
+      </div>
+      <div class="field"><label>Stress Level</label>
+        <select id="bpst"><option value="">Select</option><option value="low">Low</option><option value="medium">Moderate</option><option value="high">High</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Symptoms</label>
+      <div class="check-group">
+        <label class="check-opt"><input type="checkbox" id="bpc1"/> Headache</label>
+        <label class="check-opt"><input type="checkbox" id="bpc2"/> Dizziness</label>
+        <label class="check-opt"><input type="checkbox" id="bpc3"/> Chest Pain</label>
+        <label class="check-opt"><input type="checkbox" id="bpc4"/> Blurred Vision</label>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="predict('bp')"><i class="ti ti-stethoscope"></i> Check BP Risk</button>
+  </div>
+
+  <!-- Kidney -->
+  <div class="dform card" id="df-kidney">
+    <div class="card-title"><i class="ti ti-droplet"></i> Kidney Disease Screening</div>
+    <p class="card-sub">Assess kidney health using creatinine, urea and urine test</p>
+    <div class="divider"></div>
+    <div class="field-row">
+      <div class="field"><label>Creatinine (mg/dL)</label><input type="number" id="kc" placeholder="0.5–10" step="0.1"/></div>
+      <div class="field"><label>Blood Urea (mg/dL)</label><input type="number" id="ku" placeholder="10–200"/></div>
+      <div class="field"><label>Urine Protein</label>
+        <select id="kp"><option value="">Select</option><option value="none">No</option><option value="trace">Trace</option><option value="high">High</option></select>
+      </div>
+      <div class="field"><label>Swelling (Feet/Eyes)?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="ksw" value="yes"/> Yes</label>
+          <label class="radio-opt"><input type="radio" name="ksw" value="no" checked/> No</label>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="predict('kidney')"><i class="ti ti-stethoscope"></i> Check Kidney Risk</button>
+  </div>
+
+  <!-- Liver -->
+  <div class="dform card" id="df-liver">
+    <div class="card-title"><i class="ti ti-virus"></i> Liver Disease Screening</div>
+    <p class="card-sub">Assess liver function using SGPT, SGOT and Bilirubin</p>
+    <div class="divider"></div>
+    <div class="field-row">
+      <div class="field"><label>SGPT/ALT (U/L)</label><input type="number" id="ls" placeholder="7–56 normal"/></div>
+      <div class="field"><label>SGOT/AST (U/L)</label><input type="number" id="lo" placeholder="10–40 normal"/></div>
+      <div class="field"><label>Bilirubin (mg/dL)</label><input type="number" id="lb" placeholder="0.1–1.2" step="0.1"/></div>
+      <div class="field"><label>Alcohol Use</label>
+        <select id="la"><option value="none">Bilkul No</option><option value="occasional">Occasional</option><option value="regular">Regular</option></select>
+      </div>
+    </div>
+    <div class="field"><label>Symptoms</label>
+      <div class="check-group">
+        <label class="check-opt"><input type="checkbox" id="lc1"/> Jaundice</label>
+        <label class="check-opt"><input type="checkbox" id="lc2"/> Abdominal Pain</label>
+        <label class="check-opt"><input type="checkbox" id="lc3"/> Nausea/Vomiting</label>
+        <label class="check-opt"><input type="checkbox" id="lc4"/> Fatigue</label>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="predict('liver')"><i class="ti ti-stethoscope"></i> Check Liver Risk</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN 3: RESULT ══ -->
+<div class="screen" id="sc-result">
+  <div class="steps">
+    <div class="step done">
+      <div class="step-circle"><i class="ti ti-check" style="font-size:12px"></i></div>
+      <span class="step-label">Patient Login</span>
+    </div>
+    <div class="step done">
+      <div class="step-circle"><i class="ti ti-check" style="font-size:12px"></i></div>
+      <span class="step-label">Health Screening</span>
+    </div>
+    <div class="step active">
+      <div class="step-circle">3</div>
+      <span class="step-label">Results</span>
+    </div>
+  </div>
+
+  <div id="res-display"></div>
+
+  <!-- Appointment Card (shown only for positive) -->
+  <div class="appt-card" id="appt-section" style="display:none">
+    <div class="appt-head">
+      <div class="appt-title"><i class="ti ti-phone-call"></i> Consult a Doctor Immediately</div>
+      <span class="live-badge">● LIVE</span>
+    </div>
+    <p style="font-size:12.5px;color:#6d4c41;margin-bottom:8px">
+      Your report shows risk indicators. Speak with our specialist now — <strong>first consultation is free</strong>.
+    </p>
+    <div class="appt-number">📞 +1 920 825 4101</div>
+    <div class="appt-meta">⏰ Mon–Sat 8am – 8pm &nbsp;|&nbsp; Emergency 24/7</div>
+    <button class="btn-appt-call" onclick="callDoctor()">
+      <i class="ti ti-phone"></i> Call Now to Book Your Appointment Today
+    </button>
+  </div>
+
+  <!-- History Table -->
+  <div class="card">
+    <div class="card-title" style="font-size:15px"><i class="ti ti-history"></i> All Results This Session</div>
+    <table class="hist-table">
+      <thead><tr>
+        <th>Disease</th><th>Result</th><th>Time</th>
+      </tr></thead>
+      <tbody id="hist-body"></tbody>
+    </table>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="goBack()"><i class="ti ti-arrow-left"></i> Go Back</button>
+    <button class="btn-primary" style="margin-top:0" onclick="newPatient()"><i class="ti ti-user-plus"></i> New Patient</button>
+  </div>
+  <div id="save-msg" style="display:none"></div>
+  <div class="disclaimer">
+    <i class="ti ti-alert-triangle"></i>
+    This is an AI screening tool only. Results are not a final medical diagnosis. Please consult a qualified doctor for proper evaluation.
+  </div>
+</div>
+
+</main>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer-bar">
+  <div class="footer-inner">
+    <p>© 2025 CityMed Hospital. All rights reserved. | NABH Certified</p>
+    <div class="footer-cities">
+      <span>Delhi</span><span>Mumbai</span><span>Lucknow</span>
+      <span>Agra</span><span>Aligarh</span><span>Kanpur</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ FLOATING CONTACT BAR ══════════════ -->
+<div class="float-contact">
+  <div class="float-inner">
+    <div class="contact-strip">
+      <div class="contact-left">
+        <div class="contact-dot"></div>
+        <div class="contact-text">
+          <p>Call to book your appointment</p>
+          <strong>📞 +1 920 825 4101 &nbsp;—&nbsp; CityMed Hospital</strong>
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-note">
+          <div style="color:rgba(255,255,255,.7);font-size:11px">🏥 Our hospital will contact</div>
+          <div style="color:#80deea;font-size:10px">you soon for your health &amp; safety</div>
+        </div>
+        <button class="fcall-btn" onclick="window.location='tel:+119208254101'">
+          <i class="ti ti-phone"></i> Call Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SCRIPT ══════════════ -->
+<script>
+let patient={};
+let results=[];
+let otpSent=false;
+let timerInterval=null;
+
+function sendOTP(){
+  const mobile=document.getElementById('l-mobile').value.trim();
+  if(!/^\d{10}$/.test(mobile)){alert('Please enter a valid 10-digit mobile number');return;}
+  document.getElementById('otp-btn').disabled=true;
+  document.getElementById('otp-sent-row').style.display='block';
+  otpSent=true;
+  let sec=30;
+  document.getElementById('otp-timer').style.display='block';
+  document.getElementById('otp-timer').textContent='Resend in: '+sec+'s';
+  timerInterval=setInterval(()=>{
+    sec--;
+    document.getElementById('otp-timer').textContent='Resend in: '+sec+'s';
+    if(sec<=0){
+      clearInterval(timerInterval);
+      document.getElementById('otp-btn').disabled=false;
+      document.getElementById('otp-timer').textContent='OTP expired. Please resend.';
+    }
+  },1000);
+}
+
+function doLogin(){
+  const name=document.getElementById('l-name').value.trim();
+  const mobile=document.getElementById('l-mobile').value.trim();
+  const otp=document.getElementById('l-otp').value.trim();
+  const age=document.getElementById('l-age').value.trim();
+  const gender=document.getElementById('l-gender').value;
+  const city=document.getElementById('l-city').value;
+  if(!name){alert('Please enter your name');return;}
+  if(!/^\d{10}$/.test(mobile)){alert('10-digit mobile number chahiye');return;}
+  if(!otpSent){alert('Please send OTP first');return;}
+  if(otp!=='123456'){alert('Incorrect OTP. Demo OTP: 123456');return;}
+  if(!age||age<1||age>120){alert('Please enter a valid age');return;}
+  if(!gender){alert('Please select your gender');return;}
+  if(!city){alert('Select your city');return;}
+  patient={name,mobile,age,gender,city,time:new Date().toLocaleString('hi-IN')};
+  fetch('/save_login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({patient:{name,mobile,age,gender,city,time:patient.time}})}).catch(()=>{});
+  document.getElementById('pbar').innerHTML=
+    `<div class="pinfo"><i class="ti ti-user"></i><span>Name:</span><strong>${name}</strong></div>
+     <div class="pinfo"><i class="ti ti-device-mobile"></i><span>Mobile:</span><strong>${mobile}</strong></div>
+     <div class="pinfo"><i class="ti ti-calendar"></i><span>Age:</span><strong>${age} yrs</strong></div>
+     <div class="pinfo"><i class="ti ti-gender-bigender"></i><span>Gender:</span><strong>${gender}</strong></div>
+     <div class="pinfo"><i class="ti ti-map-pin"></i><span>City:</span><strong>${city}</strong></div>`;
+  show('sc-disease');
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function switchD(d,el){
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.dform').forEach(f=>f.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('df-'+d).classList.add('active');
+}
+
+function gv(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function gr(name){const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:'no';}
+function gc(id){return document.getElementById(id)?.checked?1:0;}
+
+function predict(type){
+  let risk=0,dname='',advice='',inputs={};
+  if(type==='diabetes'){
+    const g=gv('dg'),b=gv('db'),h=gv('dh'),fam=gr('df')==='yes'?1:0;
+    const sx=gc('dc1')+gc('dc2')+gc('dc3')+gc('dc4')+gc('dc5');
+    risk=(g>126?30:g>100?15:0)+(b>30?20:b>25?10:0)+(h>6.5?30:h>5.7?15:0)+fam*15+sx*5;
+    dname='Diabetes';
+    inputs={Glucose:g,BMI:b,HbA1c:h,'Family History':fam?'Yes':'No','Symptoms Count':sx};
+    advice=risk>=50?'See a doctor immediately. Get a blood test. Avoid sugar and refined flour.':'Not in the danger zone yet. Maintain a healthy diet and keep exercising.';
+  }else if(type==='heart'){
+    const cp=document.getElementById('hc').value;
+    const b=gv('hb'),ch=gv('hch'),hr=gv('hhr'),ex=gr('hex')==='yes'?1:0;
+    risk=(cp==='typical'?35:cp==='atypical'?20:cp==='non'?10:0)+(b>140?20:b>120?10:0)+(ch>240?20:ch>200?10:0)+(hr<60?10:0)+ex*25;
+    dname='Heart Disease';
+    inputs={'Chest Pain':cp||'None','BP':b,'Cholesterol':ch,'Heart Rate':hr,'Exercise Breathlessness':ex?'Yes':'No'};
+    advice=risk>=50?'See a cardiologist immediately. Avoid oily food and smoking.':'Heart appears healthy. Maintain regular exercise and a low-fat diet.';
+  }else if(type==='bp'){
+    const s=gv('bps'),d=gv('bpd');
+    const salt=document.getElementById('bpsl').value,stress=document.getElementById('bpst').value;
+    const sx=gc('bpc1')+gc('bpc2')+gc('bpc3')+gc('bpc4');
+    risk=(s>140?35:s>120?15:0)+(d>90?25:d>80?10:0)+(salt==='high'?15:salt==='normal'?5:0)+(stress==='high'?15:stress==='medium'?8:0)+sx*5;
+    dname='Blood Pressure';
+    inputs={'Systolic':s,'Diastolic':d,'Salt':salt,'Stress':stress,'Symptoms':sx};
+    advice=risk>=50?'BP is elevated. See a doctor. Reduce salt, stress and caffeine.':'BP is in normal range. Drink more water and exercise regularly.';
+  }else if(type==='kidney'){
+    const c=gv('kc'),u=gv('ku');
+    const p=document.getElementById('kp').value,sw=gr('ksw')==='yes'?1:0;
+    risk=(c>1.2?30:c>0.9?15:0)+(u>40?25:u>20?10:0)+(p==='high'?30:p==='trace'?15:0)+sw*20;
+    dname='Kidney Disease';
+    inputs={Creatinine:c,'Blood Urea':u,'Urine Protein':p||'None',Swelling:sw?'Yes':'No'};
+    advice=risk>=50?'See a nephrologist. Reduce protein and salt intake. Drink more water.':'Kidneys appear healthy. Stay well hydrated.';
+  }else if(type==='liver'){
+    const sg=gv('ls'),so=gv('lo'),bi=gv('lb');
+    const al=document.getElementById('la').value;
+    const sx=gc('lc1')+gc('lc2')+gc('lc3')+gc('lc4');
+    risk=(sg>56?25:sg>40?10:0)+(so>40?25:so>30?10:0)+(bi>1.2?25:0)+(al==='regular'?25:al==='occasional'?10:0)+sx*5;
+    dname='Liver Disease';
+    inputs={SGPT:sg,SGOT:so,Bilirubin:bi,'Alcohol':al,'Symptoms':sx};
+    advice=risk>=50?'See a gastroenterologist. Stop alcohol completely. Eat low-fat meals.':'Liver appears healthy. Avoid fried foods and alcohol.';
+  }
+  const positive=risk>=50;
+  const res={disease:dname,risk,positive,advice,inputs,time:new Date().toLocaleTimeString('hi-IN')};
+  const existing=results.findIndex(r=>r.disease===dname);
+  if(existing>=0)results[existing]=res;else results.push(res);
+  showResult(res);
+  if(positive) autoSavePositive(res);
+}
+
+async function autoSavePositive(res){
+  try{
+    await fetch('/save_positive',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({patient,result:res})});
+  }catch(e){}
+}
+
+function showResult(res){
+  const pos=res.positive;
+  const pct=Math.round(res.risk);
+  document.getElementById('res-display').innerHTML=`
+    <div class="result-banner ${pos?'res-positive':'res-negative'}">
+      <div class="res-icon">${pos?'⚠️':'✅'}</div>
+      <div class="res-title">${res.disease} — ${pos?'At Risk':'Normal'}</div>
+      <div class="res-pct">${pct}% Risk</div>
+      <p class="res-advice">${res.advice}</p>
+    </div>`;
+  document.getElementById('appt-section').style.display=results.some(r=>r.positive)?'block':'none';
+  document.getElementById('hist-body').innerHTML=results.map(r=>`
+    <tr>
+      <td><strong>${r.disease}</strong></td>
+      <td><span class="badge ${r.positive?'badge-red':'badge-green'}">${r.positive?'⚠️ At Risk':'✅ Normal'}</span></td>
+      <td style="color:var(--muted);font-size:12px">${r.time}</td>
+    </tr>`).join('');
+  show('sc-result');
+}
+
+function callDoctor(){window.location='tel:+119208254101';}
+
+function goBack(){show('sc-disease');}
+function newPatient(){
+  patient={};results=[];otpSent=false;
+  ['l-name','l-mobile','l-otp','l-age'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['l-gender','l-city'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  document.getElementById('otp-sent-row').style.display='none';
+  document.getElementById('otp-timer').style.display='none';
+  document.getElementById('otp-btn').disabled=false;
+  show('sc-login');
+}
+</script>
+</body>
+</html>

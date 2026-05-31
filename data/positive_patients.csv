@@ -1,0 +1,10 @@
+﻿Date,Time,Name,Mobile,Age,Gender,City,Positive Diseases,Diabetes_Risk%,Diabetes_Glucose,Diabetes_BMI,Diabetes_HbA1c,Diabetes_FamilyHistory,Diabetes_Symptoms,Heart_Risk%,Heart_ChestPain,Heart_BP,Heart_Cholesterol,Heart_HeartRate,Heart_ExerciseBreath,BP_Risk%,BP_Systolic,BP_Diastolic,BP_Salt,BP_Stress,Kidney_Risk%,Kidney_Creatinine,Kidney_Urea,Kidney_UrineProtein,Kidney_Swelling,Liver_Risk%,Liver_SGPT,Liver_SGOT,Liver_Bilirubin,Liver_Alcohol
+30/05/2026,14:30:37,rahul,9465123456,25,Male,Delhi,Diabetes,95%,150,30,14,Nahi,5,,,,,,,,,,,,,,,,,,,,,
+30/05/2026,14:47:20,jatin,8949898974,25,Male,Delhi,Diabetes,95%,150,40,12,Nahi,3,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+30/05/2026,14:50:04,suman,1234564567,25,Male,Mumbai,Diabetes,95%,150,40,12,Nahi,3,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+30/05/2026,15:00:44,partay,1234564565,55,Male,Mumbai,Diabetes,80%,150,20,10,Nahi,4,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+30/05/2026,15:03:43,partay,7845612345,21,Male,Delhi,Diabetes,95%,150,45,12,Nahi,3,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+30/05/2026,15:24:46,gopal,1234567843,25,Male,Delhi,Diabetes,85%,150,25,14,Nahi,5,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+30/05/2026,16:02:10,golu,9854551511,23,Male,Delhi,Diabetes,80%,150,45,14,Nahi,0,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+31/05/2026,01:05:16,jatin,7456123891,24,Other,Delhi,Diabetes,95%,150,40,14,Nahi,3,"Turant doctor se milein. Blood test karwaayein. Cheeni, maida band karein."
+31/05/2026,13:19:12,rahul,7844562311,25,Male,Delhi,Diabetes,85%,200,40,14,No,1,See a doctor immediately. Get a blood test. Avoid sugar and refined flour.
